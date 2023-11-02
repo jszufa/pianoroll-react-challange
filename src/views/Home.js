@@ -1,38 +1,47 @@
 import PianoRollDisplay from '../PianoRollDisplay';
+
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 
-function Home() {
+function Home(props) {
 
-    const [pianoRolls, setPianoRolls] = useState([]);
+    //wydaje się że stan pianoRolls jest w ogóle nie potrzebny
 
     const loadPianoRollData = () => {
         axios.get(`https://pianoroll.ai/random_notes`)
             .then((response) => {
-                setPianoRolls(response.data);
+                props.setPianoRolls(response.data);
                 console.log(response.data);
+                generateFormatedRollsList(response.data);
             })
             .catch((err) => { console.error('Error loading data:', err) });
     }
 
+
     //Double render effect - just in development mode
     //useEffect(() => { loadPianoRollData() }, []);
 
-    //może to nazwać inaczej -> bo teraz w sumie generuje Piano Rolls, a nie svgs - jeszcze. Nie wiem, czy ten kod jest czytelny teraz. Mógłbym też zrobić to na zasadzie, funkcja obrabiająca dane - i stworzyć drugi stan - coś na zasadzie, formatedPianoRolls, a potem zmapować tablicę tych piano rollsów. To może być czytelniejsze
-    const generateSVGs = (data) => {
+    /* useEffect(() => { generateFormatedRollsList(props.pianoRolls) }, [props.pianoRolls]); */
+    const generateFormatedRollsList = (data) => {
         console.log('generated')
-        const pianoRollList = [];
+        let newPianoRollsList = [];
 
         for (let it = 0; it < 20; it++) {
             const start = it * 60;
             const end = start + 60;
             const partData = data.slice(start, end);
 
-            pianoRollList.push(<Link to={`/${it}`} key={it}><PianoRollDisplay rollId={it} partData={partData} /></Link>)
+            newPianoRollsList.push(
+                {
+                    id: it,
+                    partData: partData,
+                }
+            )
         }
-        return pianoRollList;
+        props.setFormatedRollsList(newPianoRollsList);
+        console.log(newPianoRollsList);
     }
 
     return (
@@ -45,7 +54,14 @@ function Home() {
 
             <div id="pianoRollContainer" className='grid gap-4 grid-cols-3'>
                 {/* PIANO ROLLS LIST */}
-                {pianoRolls.length > 0 && generateSVGs(pianoRolls)}
+                {props.formatedRollsList.length > 0 &&
+                    props.formatedRollsList.map((roll) => {
+                        return (
+                            <Link to={`/${roll.id}`} key={roll.id}><PianoRollDisplay rollId={roll.id} partData={roll.partData} /></Link>
+                        )
+                    })
+                }
+
             </div>
         </div>
     )

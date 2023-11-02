@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import PianoRollDisplay from "../PianoRollDisplay";
+import { useEffect, useState } from "react";
 
 
 function MainPianoRoll(props) {
@@ -11,12 +12,23 @@ function MainPianoRoll(props) {
 
     //PianoRoll Id is passed as a dynamic parameter in the route
     const param = useParams();
+    /* console.log(props.pianoRolls) */
+
+    //wyświetlić sobie listę wszystkich pianorollsów w tym komponencie (poza tym z id Roll.id)
+    //Zmienić logikę generowania svg w komponencie home, trzeba będzie to lepiej przekazać
+    
+    //powinienem dodać formatedrollslist do localstorage, bo się laguje przy odświeżaniu
 
     return (
 
         <div className="container">
             <h1>Details page number{param.rollId}</h1>
-            <PianoRollDisplay rollId={param.rollId} /* partData={partData} to można przekazać przez link -> pytanie co z resztą listy -> i tak potrzebuję dostępu do wszystkich aktualnie załadowanych piano rollsów */ />
+            <PianoRollDisplay
+                rollId={param.rollId}
+                //Finding proper partData in the formatedRollsList
+                partData={props.formatedRollsList.filter((roll) => roll.id == param.rollId)[0].partData} />
+
+
             {/* PianoRollList */}
         </div>
     )
