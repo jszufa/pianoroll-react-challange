@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import PianoRollDisplay from "../PianoRollDisplay";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 
 function MainPianoRoll(props) {
@@ -16,20 +17,34 @@ function MainPianoRoll(props) {
 
     //wyświetlić sobie listę wszystkich pianorollsów w tym komponencie (poza tym z id Roll.id)
     //Zmienić logikę generowania svg w komponencie home, trzeba będzie to lepiej przekazać
-    
+
     //powinienem dodać formatedrollslist do localstorage, bo się laguje przy odświeżaniu
+
+    const [filteredPianoRolls, setFilteredPianoRolls] = useState([])
+
+    useEffect(() => {
+        setFilteredPianoRolls(
+            props.formatedRollsList.filter((roll) => roll.id !== Number(param.rollId))
+        )
+    }, [])
 
     return (
 
         <div className="container">
-            <h1>Details page number{param.rollId}</h1>
+            <h1>Details page number {param.rollId}</h1>
             <PianoRollDisplay
                 rollId={param.rollId}
                 //Finding proper partData in the formatedRollsList
-                partData={props.formatedRollsList.filter((roll) => roll.id == param.rollId)[0].partData} />
+                partData={props.formatedRollsList.filter((roll) => roll.id === Number(param.rollId))[0].partData} />
 
-
-            {/* PianoRollList */}
+            <div className="rolls-wrapper grid gap-4 grid-cols-3">
+            {filteredPianoRolls.map((roll) => {
+                return (
+                    <Link to={`/${roll.id}`} key={roll.id}><PianoRollDisplay rollId={roll.id} partData={roll.partData} /></Link>
+                )
+            }
+            )}
+            </div>
         </div>
     )
 
