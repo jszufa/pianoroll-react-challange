@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import ActivePianoRollDisplay from "../ActivePianoRollDisplay";
 import PianoRollDisplay from "../PianoRollDisplay";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -32,7 +33,7 @@ function MainPianoRoll(props) {
 
         <div className="container">
             <h1>Details page number {param.rollId}</h1>
-            <PianoRollDisplay
+            <ActivePianoRollDisplay
                 rollId={param.rollId}
                 //Finding proper partData in the formatedRollsList
                 partData={props.formatedRollsList.filter((roll) => roll.id === Number(param.rollId))[0].partData} />
