@@ -12,7 +12,7 @@ function AppRoutes(props) {
     return (
         <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path="/mp" element={<MainPianoRoll />}/>
+            <Route path="/:rollId" element={<MainPianoRoll />}/>
         </Routes>
     )
 }

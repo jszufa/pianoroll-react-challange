@@ -1,6 +1,7 @@
 import PianoRollDisplay from '../PianoRollDisplay';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -16,6 +17,9 @@ function Home() {
             .catch((err) => { console.error('Error loading data:', err) });
     }
 
+    //Double render effect - just in development mode
+    //useEffect(() => { loadPianoRollData() }, []);
+
     //może to nazwać inaczej -> bo teraz w sumie generuje Piano Rolls, a nie svgs - jeszcze. Nie wiem, czy ten kod jest czytelny teraz. Mógłbym też zrobić to na zasadzie, funkcja obrabiająca dane - i stworzyć drugi stan - coś na zasadzie, formatedPianoRolls, a potem zmapować tablicę tych piano rollsów. To może być czytelniejsze
     const generateSVGs = (data) => {
         console.log('generated')
@@ -26,7 +30,7 @@ function Home() {
             const end = start + 60;
             const partData = data.slice(start, end);
 
-            pianoRollList.push(<PianoRollDisplay key={it} rollId={it} partData={partData} />)
+            pianoRollList.push(<Link to={`/${it}`} key={it}><PianoRollDisplay rollId={it} partData={partData} /></Link>)
         }
         return pianoRollList;
     }
