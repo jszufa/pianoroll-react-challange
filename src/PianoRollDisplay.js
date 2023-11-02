@@ -2,6 +2,7 @@ import PianoRoll from './pianoroll.js';
 import { Component, createRef } from 'react';
 
 
+
 class PianoRollDisplay extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +14,23 @@ class PianoRollDisplay extends Component {
     new PianoRoll(svgElement, this.props.partData);
   }
 
+  componentDidUpdate() {
+    const svgElement = this.svgRef.current;
+    svgElement.innerHTML = '';
+    new PianoRoll(svgElement, this.props.partData);
+}
+
+  componentWillUnmount() {
+    const svgElement = this.svgRef.current;
+    svgElement.innerHTML = '';
+  }
+
 
   render() {
     return (
       <div className='piano-roll-card'>
         <div className='description'>This is a piano roll number {this.props.rollId}</div>
-        <svg ref={this.svgRef} className='piano-roll-svg'></svg>
+        <svg ref={this.svgRef} className='piano-roll-svg inline-block cursor-pointer'></svg>
       </div>
     )
   }
