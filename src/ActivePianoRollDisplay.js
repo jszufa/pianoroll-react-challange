@@ -12,6 +12,7 @@ class ActivePianoRollDisplay extends Component {
       startX: 0,
       endX: 0,
       svgWidth: 0,
+      selectionVisible: false,
     };
   }
 
@@ -21,6 +22,8 @@ class ActivePianoRollDisplay extends Component {
     const svgElement = this.svgRef.current;
     new PianoRoll(svgElement, this.props.partData);
     this.setState({ svgWidth: svgElement.clientWidth });
+
+    document.addEventListener('dblclick', this.handleClickOutside);
   }
 
   componentDidUpdate() {
@@ -33,6 +36,8 @@ class ActivePianoRollDisplay extends Component {
   componentWillUnmount() {
     const svgElement = this.svgRef.current;
     svgElement.innerHTML = '';
+
+    document.removeEventListener('click', this.handleClickOutside);
   }
 
   //HANDLING MOUSE EVENTS
@@ -42,6 +47,7 @@ class ActivePianoRollDisplay extends Component {
       isSelecting: true,
       startX: e.clientX,
       endX: e.clientX,
+      selectionVisible: true,
     });
 
     window.addEventListener('mousemove', this.handleMouseMove);
@@ -57,7 +63,7 @@ class ActivePianoRollDisplay extends Component {
   }
 
   handleMouseUp = () => {
-    this.setState({ isSelecting: false });
+    this.setState({ isSelecting: false, });
     
     //these lines of code are repeated...
     const { startX, endX, svgWidth } = this.state;
@@ -80,6 +86,19 @@ class ActivePianoRollDisplay extends Component {
 
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
+  }
+
+  handleClickOutside = (e) => {
+    // Check if the click event target is not within the SVG element
+    if (
+      this.svgRef.current &&
+      !this.svgRef.current.contains(e.target)
+    ) {
+      // The click is outside the SVG, so you can hide the selection or trigger your effect here
+      this.setState({
+        selectionVisible: false,
+      })
+    }
   }
 
 
@@ -116,7 +135,7 @@ class ActivePianoRollDisplay extends Component {
 
 
   render() {
-    const { startX, endX, svgWidth } = this.state;
+    const { startX, endX, svgWidth, selectionVisible } = this.state;
 
     let svgMarginLeft = 0;
 
@@ -127,14 +146,22 @@ class ActivePianoRollDisplay extends Component {
     const left = Math.max(svgMarginLeft, Math.min(startX, endX));
     const width = Math.min(svgWidth - (left - svgMarginLeft), Math.abs(endX - startX));
 
-    const selectionStyle = {
+    let selectionStyle = {
       left: left - svgMarginLeft + 'px',
       width: width + 'px',
     };
 
+    if (!selectionVisible) {
+      selectionStyle = {
+        width: 0,
+        border: 'none',
+      };
+    }
+
     //PROBLEMS
-    //czemu muszę tu odejmować od left - sprawdzić to --- aaa - bo on liczy od parent folderu tutaj a nie bezwzględnie?
     //problem z odklikiwaniem zaznaczenia
+    //ewentualnie pobawić się jeszcze animacją (czasem kiedy odkliknę poza prostokątem to nie działa...)
+    //to mogę zrobić z refem..
     
 
     return (
