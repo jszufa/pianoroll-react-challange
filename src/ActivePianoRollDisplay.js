@@ -58,59 +58,56 @@ class ActivePianoRollDisplay extends Component {
 
   handleMouseUp = () => {
     this.setState({ isSelecting: false });
+    
+    //these lines of code are repeated...
+    const { startX, endX, svgWidth } = this.state;
+
+    let svgMarginLeft = 0;
+
+    if (this.svgRef.current) {
+      svgMarginLeft = this.svgRef.current.getBoundingClientRect().left;
+    }
+
+    const left = Math.max(svgMarginLeft, Math.min(startX, endX));
+    const width = Math.min(svgWidth - (left - svgMarginLeft), Math.abs(endX - startX));
+    const selectionX = left - svgMarginLeft;
+
+    this.reversePianoroll(svgWidth, selectionX, width);
+    console.log(`Start point: ${(left)}`);
+    console.log(`End point: ${(left + width)}`);
+    console.log('----------------------------');
+    //relative to the top-left of the viewport.
 
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
 
+  reversePianoroll = (svgWidth, selectionX, selectionWidth) => {
+    // Przelicz punkt zaznaczenia i jego szerokość na pierwotne dane
+    //SelectionX is a relative value to the svg, here this is not a viewportx value
+    const selectionStart = (selectionX / svgWidth);
+    const selectionEnd = ((selectionX + selectionWidth) / svgWidth);
+    
 
-//ZADANIE: Stworzyć funkcję zbierającą dane z zaznaczenia i logujące je.
-//Jakie mam dane:
-//1. szerokość svg
-//2. punkt zaznaczenia + szerokość zaznaczenia
-//3. Mam klasę pianoroll, która różnymi metodami przerabia dane na grafikę o określonej szerokości(czas / 60 dźwięków)
-//4. ja potrzebuję odwrócić ten proces...
+    const sequence = this.props.partData;
+    const start = sequence[0].start;
+    const range = sequence[sequence.length - 1].end - start;
 
-reversePianoroll = (svgWidth, selectionX, selectionWidth) => {
-  // Przelicz punkt zaznaczenia i jego szerokość na pierwotne dane
-  const selectionStart = (selectionX / svgWidth);
-  const selectionEnd = ((selectionX + selectionWidth) / svgWidth);
+    let selectionData = [];
 
-  const sequence = this.props.partData;
-  const start = sequence[0].start;
-  const range = sequence[sequence.length - 1].end - start;
+    sequence.forEach((note) => {
+      const noteX = (note.start - start) / range;
+      const noteWidth = (note.end - note.start) / range;
+      
+      if (((noteX + noteWidth) >= selectionStart && noteX <= selectionEnd)) {
+        selectionData.push(note);
+      }
+    })
 
-  sequence.forEach((note) => {
-    const noteX = (note.start - start)/range;
-    const noteWidth = (note.end - note.start)/range;
-  })
-  //teraz tylko powyższą operację trzeba ogarnąć... można np. dodać warunek w for each i dodawac odpowiednie nutki do tablicy, którą następnie wyloguję.
+    console.log(`Number of notes: ${selectionData.length}`);
+  }
 
-  sequence.filter((note) => ((noteX + noteWidth) >= selectionStart || noteX <= selectionEnd ))
-
-
-
-  
-
-  //1. znajdź czas początkowy wyrażony w proporcji
-  //2. znajdź czas końcowy wyrażony w proporcji
-  //3. Znajdź formułę / sposób, który będzie konwertował dane z tablicy w taki sposób, że będę miał czas rozpoczęcia i zakończenia każdego dźwięku.
-  //4. przefiltruj tablicę z danymi, tak żeby wyrzuc
-
-  return { time, noteCount };
-}
-
-
-
-// Przykład użycia
-const svgWidth = 800; // Szerokość SVG
-const selectionX = 200; // Punkt zaznaczenia
-const selectionWidth = 400; // Szerokość zaznaczenia
-
-const reversedData = reversePianoroll(svgWidth, selectionX, selectionWidth);
-
-console.log('Czas:', reversedData.time, 'Ilość dźwięków:', reversedData.noteCount);
 
 
 
@@ -135,6 +132,10 @@ console.log('Czas:', reversedData.time, 'Ilość dźwięków:', reversedData.not
       width: width + 'px',
     };
 
+    //PROBLEMS
+    //czemu muszę tu odejmować od left - sprawdzić to --- aaa - bo on liczy od parent folderu tutaj a nie bezwzględnie?
+    //problem z odklikiwaniem zaznaczenia
+    
 
     return (
       <div className='piano-roll-card main-piano-roll'>
