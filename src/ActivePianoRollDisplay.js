@@ -50,7 +50,9 @@ class ActivePianoRollDisplay extends Component {
 
   handleMouseMove = (e) => {
     if (this.state.isSelecting) {
-      this.setState({ endX: e.clientX });
+      const svgMarginLeft = this.svgRef.current.getBoundingClientRect().left;
+
+      this.setState({ endX: Math.max(e.clientX, svgMarginLeft) });
     }
   }
 
@@ -64,25 +66,32 @@ class ActivePianoRollDisplay extends Component {
   render() {
     const { startX, endX, svgWidth } = this.state;
 
-    const left = Math.max(0, Math.min(startX, endX));
-    const width = Math.min(svgWidth - left, Math.abs(endX - startX));
+    let svgMarginLeft = 0;
+
+    if (this.svgRef.current) {
+      svgMarginLeft = this.svgRef.current.getBoundingClientRect().left;
+    }
+
+    const left = Math.max(svgMarginLeft, Math.min(startX, endX));
+    const width = Math.min(svgWidth - (left - svgMarginLeft), Math.abs(endX - startX));
 
     const selectionStyle = {
-      left: left + 'px',
+      left: left - svgMarginLeft + 'px',
       width: width + 'px',
     };
+
 
     return (
       <div className='piano-roll-card main-piano-roll'>
         <div className='description'>This is a piano roll number {this.props.rollId}</div>
-        <div className='overlay-container relative'>
+        <div className='overlay-container relative w-3/5 m-auto'>
           <div
-            className="selection-overlay absolute h-full z-50 bg-black opacity-30"
+            className="selection-overlay absolute h-full z-50 bg-amber-400 opacity-30 border-l-[1px] border-r-[2px] border-amber-600 border-solid"
             style={selectionStyle}
           ></div>
           <svg
             ref={this.svgRef}
-            className='piano-roll-svg inline-block'
+            className='w-full h-40 inline-block '
             onMouseDown={this.handleMouseDown}
           >
           </svg>
