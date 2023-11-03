@@ -31,20 +31,21 @@ function MainPianoRoll(props) {
 
     return (
 
-        <div className="container">
-            <h1>Details page number {param.rollId}</h1>
-            <ActivePianoRollDisplay
-                rollId={param.rollId}
-                //Finding proper partData in the formatedRollsList
-                partData={props.formatedRollsList.filter((roll) => roll.id === Number(param.rollId))[0].partData} />
-
-            <div className="rolls-wrapper grid gap-4 grid-cols-3">
-            {filteredPianoRolls.map((roll) => {
-                return (
-                    <Link to={`/${roll.id}`} key={roll.id}><PianoRollDisplay rollId={roll.id} partData={roll.partData} /></Link>
-                )
-            }
-            )}
+        <div className="container flex m-auto my-10 h-128">
+            <div className="w-3/4 mr-8 rounded-2xl border border-zinc-300 shadow-sm  h-full pt-12">
+                
+                <ActivePianoRollDisplay
+                    rollId={param.rollId}
+                    //Finding proper partData in the formatedRollsList
+                    partData={props.formatedRollsList.filter((roll) => roll.id === Number(param.rollId))[0].partData} />
+            </div>
+            <div className="rolls-wrapper w-1/4 shadow-sm flex  flex-col space-y-4 overflow-auto rounded-2xl border border-zinc-300 p-6 h-full">
+                {filteredPianoRolls.map((roll) => {
+                    return (
+                        <Link to={`/${roll.id}`} key={roll.id}><PianoRollDisplay rollId={roll.id} partData={roll.partData} /></Link>
+                    )
+                }
+                )}
             </div>
         </div>
     )

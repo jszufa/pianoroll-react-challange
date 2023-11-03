@@ -45,14 +45,13 @@ function Home(props) {
     }
 
     return (
-        <div>
-            <h1> Welcome to PianoRoll frontend coding challenge!</h1>
+        <div className='home w-11/12 lg:w-10/12 xl:w-4/5 m-auto'>
 
-            <div id="buttonContainer">
-                <button id="loadCSV" onClick={() => loadPianoRollData()}>Load Piano Rolls!</button>
+            <div id="buttonContainer" className='my-5'>
+                <button id="loadCSV" className='bg-emerald-700 hover:opacity-70 duration-200' onClick={() => loadPianoRollData()}>Load Piano Rolls!</button>
             </div>
 
-            <div id="pianoRollContainer" className='grid gap-4 grid-cols-3'>
+            <div id="pianoRollContainer" className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
                 {/* PIANO ROLLS LIST */}
                 {props.formatedRollsList.length > 0 &&
                     props.formatedRollsList.map((roll) => {

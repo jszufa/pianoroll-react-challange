@@ -47,14 +47,11 @@ button {
   justify-content: center;
 }
 
-button:hover {
-  transform: scale(1.05);
-}
 
 .piano-roll-svg {
   width: 80%;
-  height: 150px;
-  border: 2px solid #381815;
+  height: 120px;
+  /* border: 2px solid #381815; */
 }
 
 /* .piano-roll-card {

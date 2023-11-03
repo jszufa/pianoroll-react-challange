@@ -158,23 +158,28 @@ class ActivePianoRollDisplay extends Component {
       };
     }
 
-    //PROBLEMS
-    //problem z odklikiwaniem zaznaczenia
-    //ewentualnie pobawić się jeszcze animacją (czasem kiedy odkliknę poza prostokątem to nie działa...)
-    //to mogę zrobić z refem..
+    //Stylowanie
+    //Porządki
+    //usnięcie niepotrzebnego stanu
+    //ewentulanie dodanie local-storage
+    //stworzenie odpowiednich widoków
+    //podesłanie Miśkowi do sprawdzenia
+    //redakcja kodu
+
+
     
 
     return (
-      <div className='piano-roll-card main-piano-roll'>
-        <div className='description'>This is a piano roll number {this.props.rollId}</div>
-        <div className='overlay-container relative w-3/5 m-auto'>
+      <div className='main-piano-roll '>
+        <div className='description mb-4 font-bold'>This is a piano roll number {this.props.rollId}</div>
+        <div className='overlay-container relative w-3/5 m-auto rounded-xl border border-sky-900'>
           <div
-            className="selection-overlay absolute h-full z-50 bg-amber-400 opacity-30 border-l-[1px] border-r-[2px] border-amber-600 border-solid"
+            className="selection-overlay absolute h-full z-50 bg-amber-400 opacity-30 border-l-[1px] border-r-[2px] border-amber-600 border-solid rounded-2xl"
             style={selectionStyle}
           ></div>
           <svg
             ref={this.svgRef}
-            className='w-full h-40 inline-block '
+            className='w-full h-72 inline-block rounded-xl'
             onMouseDown={this.handleMouseDown}
           >
           </svg>

@@ -28,9 +28,9 @@ class PianoRollDisplay extends Component {
 
   render() {
     return (
-      <div className='piano-roll-card'>
-        <div className='description'>This is a piano roll number {this.props.rollId}</div>
-        <svg ref={this.svgRef} className='piano-roll-svg inline-block cursor-pointer'></svg>
+      <div className='piano-roll-card rounded-2xl border border-zinc-200 shadow-md pb-4 hover:opacity-70 duration-300 hover:scale-105'>
+        <div className='description text-gray-600 mb-2'>Piano roll number {this.props.rollId}</div>
+        <svg ref={this.svgRef} className='piano-roll-svg inline-block cursor-pointer rounded-2xl border border-sky-900 ' ></svg>
       </div>
     )
   }
