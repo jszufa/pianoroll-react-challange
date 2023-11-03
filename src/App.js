@@ -3,13 +3,8 @@ import logo from './assets/white.svg';
 import AppRoutes from './routes/AppRoutes';
 import { useState } from 'react';
 
-
 function App() {
-  const [pianoRolls, setPianoRolls] = useState([]);
   const [formatedRollsList, setFormatedRollsList] = useState([]);
-
-
-
 
   return (
     <div className="App">
@@ -18,9 +13,7 @@ function App() {
           <img src={logo} alt="Logo" />
         </div>
       </nav>
-      <AppRoutes 
-      pianoRolls={pianoRolls} 
-      setPianoRolls={setPianoRolls}
+      <AppRoutes
       formatedRollsList={formatedRollsList} 
       setFormatedRollsList={setFormatedRollsList}
       />
@@ -29,3 +22,6 @@ function App() {
 }
 
 export default App;
+
+    //ewentulanie dodanie local-storage
+    //redakcja kodu

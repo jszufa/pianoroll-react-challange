@@ -1,7 +1,5 @@
-import PianoRoll from './pianoroll.js';
+import PianoRoll from '../helpers/pianoroll.js';
 import { Component, createRef } from 'react';
-
-
 
 class PianoRollDisplay extends Component {
   constructor(props) {
@@ -30,7 +28,7 @@ class PianoRollDisplay extends Component {
     return (
       <div className='piano-roll-card rounded-2xl border border-zinc-200 shadow-md pb-4 hover:opacity-70 duration-300 hover:scale-105'>
         <div className='description text-gray-600 mb-2'>Piano roll number {this.props.rollId}</div>
-        <svg ref={this.svgRef} className='piano-roll-svg inline-block cursor-pointer rounded-2xl border border-sky-900 ' ></svg>
+        <svg ref={this.svgRef} className='piano-roll-svg inline-block rounded-2xl border border-sky-900 ' ></svg>
       </div>
     )
   }

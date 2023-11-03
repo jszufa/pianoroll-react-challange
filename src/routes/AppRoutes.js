@@ -12,12 +12,10 @@ function AppRoutes(props) {
     return (
         <Routes>
             <Route path="/" element={<Home
-                pianoRolls={props.pianoRolls}
-                setPianoRolls={props.setPianoRolls}
                 formatedRollsList={props.formatedRollsList}
                 setFormatedRollsList={props.setFormatedRollsList}
             />} />
-            <Route path="/:rollId" element={<MainPianoRoll pianoRolls={props.pianoRolls} formatedRollsList={props.formatedRollsList} />} />
+            <Route path="/:rollId" element={<MainPianoRoll formatedRollsList={props.formatedRollsList} />} />
         </Routes>
     )
 }

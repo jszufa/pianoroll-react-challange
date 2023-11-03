@@ -1,7 +1,5 @@
-import PianoRoll from './pianoroll.js';
+import PianoRoll from '../helpers/pianoroll.js';
 import { Component, createRef } from 'react';
-
-
 
 class ActivePianoRollDisplay extends Component {
   constructor(props) {
@@ -23,6 +21,7 @@ class ActivePianoRollDisplay extends Component {
     new PianoRoll(svgElement, this.props.partData);
     this.setState({ svgWidth: svgElement.clientWidth });
 
+    //Event to remove selection
     document.addEventListener('dblclick', this.handleClickOutside);
   }
 
@@ -30,7 +29,6 @@ class ActivePianoRollDisplay extends Component {
     const svgElement = this.svgRef.current;
     svgElement.innerHTML = '';
     new PianoRoll(svgElement, this.props.partData);
-    /* this.setState({ svgWidth: svgElement.clientWidth }); */
   }
 
   componentWillUnmount() {
@@ -50,6 +48,9 @@ class ActivePianoRollDisplay extends Component {
       selectionVisible: true,
     });
 
+    //Attaching event listeners to the window object
+    //to ensure that the mousemove and mouseup events are detected 
+    //even when the mouse pointer moves outside the component's boundaries
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
   }
@@ -57,8 +58,8 @@ class ActivePianoRollDisplay extends Component {
   handleMouseMove = (e) => {
     if (this.state.isSelecting) {
       const svgMarginLeft = this.svgRef.current.getBoundingClientRect().left;
-
-      this.setState({ endX: Math.max(e.clientX, svgMarginLeft) });
+      
+      this.setState({ endX: Math.max(e.clientX, svgMarginLeft) }); //To handle case, when mouse is moved to the left of svg
     }
   }
 
@@ -69,7 +70,6 @@ class ActivePianoRollDisplay extends Component {
     const { startX, endX, svgWidth } = this.state;
 
     let svgMarginLeft = 0;
-
     if (this.svgRef.current) {
       svgMarginLeft = this.svgRef.current.getBoundingClientRect().left;
     }
@@ -77,24 +77,25 @@ class ActivePianoRollDisplay extends Component {
     const left = Math.max(svgMarginLeft, Math.min(startX, endX));
     const width = Math.min(svgWidth - (left - svgMarginLeft), Math.abs(endX - startX));
     const selectionX = left - svgMarginLeft;
+    //.....
 
-    this.reversePianoroll(svgWidth, selectionX, width);
-    console.log(`Start point: ${(left)}`);
+    this.countNotes(svgWidth, selectionX, width);
+    console.log('----------------------------'); //Logging values relative to the top-left of the viewport.
+    console.log(`Start point: ${(left)}`); 
     console.log(`End point: ${(left + width)}`);
-    console.log('----------------------------');
-    //relative to the top-left of the viewport.
+    
 
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
   handleClickOutside = (e) => {
-    // Check if the click event target is not within the SVG element
+    // Check if the dblclick event target is not within the SVG element
     if (
       this.svgRef.current &&
       !this.svgRef.current.contains(e.target)
     ) {
-      // The click is outside the SVG, so you can hide the selection or trigger your effect here
+      // The dblclick is outside the SVG, so we can hide the selection
       this.setState({
         selectionVisible: false,
       })
@@ -102,13 +103,12 @@ class ActivePianoRollDisplay extends Component {
   }
 
 
-  reversePianoroll = (svgWidth, selectionX, selectionWidth) => {
-    // Przelicz punkt zaznaczenia i jego szerokość na pierwotne dane
-    //SelectionX is a relative value to the svg, here this is not a viewportx value
+  countNotes = (svgWidth, selectionX, selectionWidth) => {
+
+    //SelectionX is a relative value to the svg, here this is not a viewportx value (absolute)
     const selectionStart = (selectionX / svgWidth);
     const selectionEnd = ((selectionX + selectionWidth) / svgWidth);
     
-
     const sequence = this.props.partData;
     const start = sequence[0].start;
     const range = sequence[sequence.length - 1].end - start;
@@ -117,9 +117,10 @@ class ActivePianoRollDisplay extends Component {
 
     sequence.forEach((note) => {
       const noteX = (note.start - start) / range;
-      const noteWidth = (note.end - note.start) / range;
+      /* const noteWidth = (note.end - note.start) / range; */
+      /* If we would like to count notes that for example end within selection, but not necessarily start */
       
-      if (((noteX + noteWidth) >= selectionStart && noteX <= selectionEnd)) {
+      if (((noteX) >= selectionStart && noteX <= selectionEnd)) {
         selectionData.push(note);
       }
     })
@@ -128,13 +129,9 @@ class ActivePianoRollDisplay extends Component {
   }
 
 
-
-
-
-
-
-
   render() {
+
+    //Handling visual layer to the selection
     const { startX, endX, svgWidth, selectionVisible } = this.state;
 
     let svgMarginLeft = 0;
@@ -157,17 +154,6 @@ class ActivePianoRollDisplay extends Component {
         border: 'none',
       };
     }
-
-    //Stylowanie
-    //Porządki
-    //usnięcie niepotrzebnego stanu
-    //ewentulanie dodanie local-storage
-    //stworzenie odpowiednich widoków
-    //podesłanie Miśkowi do sprawdzenia
-    //redakcja kodu
-
-
-    
 
     return (
       <div className='main-piano-roll'>

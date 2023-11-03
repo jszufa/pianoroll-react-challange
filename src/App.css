@@ -1,4 +1,3 @@
-
 .navbar {
   display: flex;
   align-items: center;
@@ -13,17 +12,6 @@
   fill: white;
 }
 
-/* #pianoRollContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
-h1 {
-  margin-bottom: 20px;
-  font-size: 42px;
-}
-
 button {
   padding: 15px 25px;
   font-size: 18px;
@@ -36,7 +24,6 @@ button {
 }
 
 button {
-  /* ... existing button styles ... */
   border-bottom: 3px solid #381815;  /* A darker shade for 3D effect */
   position: relative;  /* Required for the top movement on hover */
   transition: all 1.1s ease;  /* Transition for all properties */
@@ -47,20 +34,10 @@ button {
   justify-content: center;
 }
 
-
 .piano-roll-svg {
   width: 80%;
   height: 120px;
-  /* border: 2px solid #381815; */
 }
-
-/* .piano-roll-card {
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 50%;
-  box-sizing: border-box;
-} */
 
 .description {
   margin-top: 10px;
