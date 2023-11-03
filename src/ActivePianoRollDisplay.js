@@ -63,6 +63,61 @@ class ActivePianoRollDisplay extends Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
+
+
+//ZADANIE: Stworzyć funkcję zbierającą dane z zaznaczenia i logujące je.
+//Jakie mam dane:
+//1. szerokość svg
+//2. punkt zaznaczenia + szerokość zaznaczenia
+//3. Mam klasę pianoroll, która różnymi metodami przerabia dane na grafikę o określonej szerokości(czas / 60 dźwięków)
+//4. ja potrzebuję odwrócić ten proces...
+
+reversePianoroll = (svgWidth, selectionX, selectionWidth) => {
+  // Przelicz punkt zaznaczenia i jego szerokość na pierwotne dane
+  const selectionStart = (selectionX / svgWidth);
+  const selectionEnd = ((selectionX + selectionWidth) / svgWidth);
+
+  const sequence = this.props.partData;
+  const start = sequence[0].start;
+  const range = sequence[sequence.length - 1].end - start;
+
+  sequence.forEach((note) => {
+    const noteX = (note.start - start)/range;
+    const noteWidth = (note.end - note.start)/range;
+  })
+  //teraz tylko powyższą operację trzeba ogarnąć... można np. dodać warunek w for each i dodawac odpowiednie nutki do tablicy, którą następnie wyloguję.
+
+  sequence.filter((note) => ((noteX + noteWidth) >= selectionStart || noteX <= selectionEnd ))
+
+
+
+  
+
+  //1. znajdź czas początkowy wyrażony w proporcji
+  //2. znajdź czas końcowy wyrażony w proporcji
+  //3. Znajdź formułę / sposób, który będzie konwertował dane z tablicy w taki sposób, że będę miał czas rozpoczęcia i zakończenia każdego dźwięku.
+  //4. przefiltruj tablicę z danymi, tak żeby wyrzuc
+
+  return { time, noteCount };
+}
+
+
+
+// Przykład użycia
+const svgWidth = 800; // Szerokość SVG
+const selectionX = 200; // Punkt zaznaczenia
+const selectionWidth = 400; // Szerokość zaznaczenia
+
+const reversedData = reversePianoroll(svgWidth, selectionX, selectionWidth);
+
+console.log('Czas:', reversedData.time, 'Ilość dźwięków:', reversedData.noteCount);
+
+
+
+
+
+
+
   render() {
     const { startX, endX, svgWidth } = this.state;
 

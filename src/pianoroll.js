@@ -36,6 +36,8 @@ export default class PianoRoll {
   drawPianoRoll(sequence) {
     this.start = sequence[0].start
     this.end = sequence[sequence.length - 1].end - this.start
+    //!! End - długość sekwencji (nie wiem, jeszcze w jakich jednostkach)
+
     // Extract just the pitches to prepare the SVG parameters
     const pitches = sequence.map(note => {
       return note.pitch
@@ -61,12 +63,17 @@ export default class PianoRoll {
     this.note_height = 1 / pitch_span;
     this.drawEmptyPianoRoll(pitch_min, pitch_max)
 
+    //!!tworzenie prostokątów odpowiadających dźwiękom
     sequence.forEach((note) => {
       const note_rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 
       // Position and width are based on time
       const x = this.timeToX(note.start - this.start);
       const w = this.timeToX(note.end - note.start);
+
+      //!!Najważniejsza część dla mnie...
+      //x - moment w którym zaczyna się dźwięk / czas trwania sekwencji
+      //w - czas trwania dźwięku / czas trwania sekwencji
 
       note_rectangle.setAttribute('x', `${x}`);
       note_rectangle.setAttribute('width', `${w}`);
