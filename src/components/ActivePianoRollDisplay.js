@@ -156,16 +156,15 @@ class ActivePianoRollDisplay extends Component {
     }
 
     return (
-      <div className='main-piano-roll'>
-        <div className='description mb-4 font-bold'>This is a piano roll number {this.props.rollId}</div>
-        <div className='overlay-container relative sm:w-11/12 lg:w-4/5 m-auto rounded-xl border border-sky-900'>
+      <div className='active-piano-roll'>
+        <div className='description'>This is a piano roll number {this.props.rollId}</div>
+        <div className='overlay-container'>
           <div
-            className="selection-overlay absolute h-full z-50 bg-amber-400 opacity-30 border-l-[1px] border-r-[2px] border-amber-600 border-solid rounded-xl"
+            className="selection-overlay"
             style={selectionStyle}
           ></div>
           <svg
             ref={this.svgRef}
-            className='w-full h-52 sm:h-56 md:h-72 inline-block rounded-xl'
             onMouseDown={this.handleMouseDown}
           >
           </svg>

@@ -40,12 +40,10 @@ function Home(props) {
     }, []);
 
     return (
-        <div className='homeContainer w-11/12 lg:w-10/12 xl:w-4/5 m-auto'>
+        <div className='w-11/12 lg:w-10/12 xl:w-4/5 m-auto'>
 
-            <div id="buttonContainer" className='my-5'>
+            <div id="buttonContainer">
                 <button
-                    id="loadCSV"
-                    className='bg-emerald-700 hover:opacity-70 duration-200'
                     onClick={() => loadPianoRollData()}>Load Piano Rolls!</button>
             </div>
 

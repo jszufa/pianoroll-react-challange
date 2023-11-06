@@ -16,7 +16,7 @@ class PianoRollDisplay extends Component {
     const svgElement = this.svgRef.current;
     svgElement.innerHTML = '';
     new PianoRoll(svgElement, this.props.partData);
-}
+  }
 
   componentWillUnmount() {
     const svgElement = this.svgRef.current;
@@ -26,9 +26,9 @@ class PianoRollDisplay extends Component {
 
   render() {
     return (
-      <div className='piano-roll-card rounded-2xl border border-zinc-200 shadow-md pb-4 hover:opacity-70 duration-300 hover:scale-105'>
-        <div className='description text-gray-600 mb-2'>Piano roll number {this.props.rollId}</div>
-        <svg ref={this.svgRef} className='piano-roll-svg inline-block rounded-2xl border border-sky-900 ' ></svg>
+      <div className='piano-roll-card'>
+        <div className='description'>Piano roll number {this.props.rollId}</div>
+        <svg ref={this.svgRef} className='piano-roll-svg' ></svg>
       </div>
     )
   }
