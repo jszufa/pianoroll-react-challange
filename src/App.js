@@ -2,7 +2,7 @@ import './App.css';
 import logo from './assets/white.svg';
 import AppRoutes from './routes/AppRoutes';
 import { useState } from 'react';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 
 function App() {
   const [formatedRollsList, setFormatedRollsList] = useState(
@@ -12,9 +12,10 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <nav className="navbar">
-          <div className="logo-container">
+          <Link to={'/'}><div className="logo-container">
             <img src={logo} alt="Logo" />
           </div>
+          </Link>
         </nav>
         <AppRoutes
           formatedRollsList={formatedRollsList}
@@ -26,6 +27,3 @@ function App() {
 }
 
 export default App;
-
-//ewentulanie dodanie local-storage
-//redakcja kodu

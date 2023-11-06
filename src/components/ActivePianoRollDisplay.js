@@ -66,7 +66,7 @@ class ActivePianoRollDisplay extends Component {
   handleMouseUp = () => {
     this.setState({ isSelecting: false, });
     
-    //these lines of code are repeated...
+    //calculating startpoint & endpoint
     const { startX, endX, svgWidth } = this.state;
 
     let svgMarginLeft = 0;
@@ -77,12 +77,12 @@ class ActivePianoRollDisplay extends Component {
     const left = Math.max(svgMarginLeft, Math.min(startX, endX));
     const width = Math.min(svgWidth - (left - svgMarginLeft), Math.abs(endX - startX));
     const selectionX = left - svgMarginLeft;
-    //.....
 
     this.countNotes(svgWidth, selectionX, width);
-    console.log('----------------------------'); //Logging values relative to the top-left of the viewport.
+    //Logging values relative to the top-left of the viewport.
     console.log(`Start point: ${(left)}`); 
     console.log(`End point: ${(left + width)}`);
+    console.log('----------------------------');
     
 
     window.removeEventListener('mousemove', this.handleMouseMove);
@@ -132,6 +132,7 @@ class ActivePianoRollDisplay extends Component {
   render() {
 
     //Handling visual layer to the selection
+    //calculating startpoint & endpoint
     const { startX, endX, svgWidth, selectionVisible } = this.state;
 
     let svgMarginLeft = 0;

@@ -5,9 +5,6 @@ module.exports = {
     "./src/**/*.{html,js, css}"],
   theme: {
     extend: {
-      height: {
-        '128': '32rem',
-      }
     },
   },
   plugins: [],
