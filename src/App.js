@@ -4,7 +4,8 @@ import AppRoutes from './routes/AppRoutes';
 import { useState } from 'react';
 
 function App() {
-  const [formatedRollsList, setFormatedRollsList] = useState([]);
+  const [formatedRollsList, setFormatedRollsList] = useState(
+    localStorage.getItem('formatedRollsList') ? JSON.parse(localStorage.getItem('formatedRollsList')) : []);
 
   return (
     <div className="App">
@@ -14,8 +15,8 @@ function App() {
         </div>
       </nav>
       <AppRoutes
-      formatedRollsList={formatedRollsList} 
-      setFormatedRollsList={setFormatedRollsList}
+        formatedRollsList={formatedRollsList}
+        setFormatedRollsList={setFormatedRollsList}
       />
     </div>
   );
@@ -23,5 +24,5 @@ function App() {
 
 export default App;
 
-    //ewentulanie dodanie local-storage
-    //redakcja kodu
+//ewentulanie dodanie local-storage
+//redakcja kodu

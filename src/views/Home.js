@@ -1,6 +1,7 @@
 import PianoRollDisplay from '../components/PianoRollDisplay';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 
 function Home(props) {
@@ -14,7 +15,6 @@ function Home(props) {
     }
 
     const generateFormatedRollsList = (data) => {
-        console.log('generated')
         let newPianoRollsList = [];
 
         for (let it = 0; it < 20; it++) {
@@ -30,11 +30,14 @@ function Home(props) {
             )
         }
         props.setFormatedRollsList(newPianoRollsList);
-        console.log(newPianoRollsList);
+        localStorage.setItem('formatedRollsList', JSON.stringify(newPianoRollsList));
     }
 
-    //CODE FOR INITIALIZING WITHOUT BUTTON - double render effect just in development mode
-    //useEffect(() => { loadPianoRollData() }, []);
+    //Double render effect just in development mode
+    useEffect(() => {
+        loadPianoRollData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='homeContainer w-11/12 lg:w-10/12 xl:w-4/5 m-auto'>

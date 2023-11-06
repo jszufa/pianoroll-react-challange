@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import ActivePianoRollDisplay from "../components/ActivePianoRollDisplay";
 import PianoRollDisplay from "../components/PianoRollDisplay";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -16,6 +16,7 @@ function MainPianoRoll(props) {
         setFilteredPianoRolls(
             props.formatedRollsList.filter((roll) => roll.id !== Number(param.rollId))
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
